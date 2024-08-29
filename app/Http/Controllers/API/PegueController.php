@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\AI\Assistant;
+use App\Models\Citation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class PegueController {
 
@@ -15,8 +15,23 @@ class PegueController {
         $assistant = new Assistant();
         $assistant->systemMessage(null);
         $metadata = $assistant->send($request->input("citation"));
-        Storage::disk('local')->put(json_encode($metadata), JSON_PRETTY_PRINT);
+        $metadata = json_decode($metadata, true);
 
-        return response()->json($metadata, 200);
+        $citation = new Citation();
+        $citation->author = json_encode($metadata['author']);
+        $citation->title = $metadata['title'];
+        $citation->publication  = $metadata['publication'];
+        $citation->volume = $metadata['volume'];
+        $citation->issue = $metadata['issue'];
+        $citation->year = json_encode($metadata['issued']);
+        $citation->pages = $metadata['pages'];
+        $citation->mesh_headings = json_encode($metadata['mesh-headings']);
+        $citation->drug_type = $metadata['drug_type'];
+
+        \Log::info($citation);
+
+        \Log::info($citation->save());
+
+        return response()->json($citation, 200);
     }
 }

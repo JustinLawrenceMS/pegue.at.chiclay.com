@@ -33,7 +33,8 @@ class Assistant
     "url": "",
     "volume": 0
   }
-  Note the field "mesh-headings".  Here you simply add one or more MeSH headings, as a JSON array of strings.';
+  Note the field "mesh-headings".  Here you simply add one or more MeSH headings, as a JSON array of strings.
+  Use only official MeSH headings for this field, from the National Library of Medicine';
 
     protected array $messages = [];
 
