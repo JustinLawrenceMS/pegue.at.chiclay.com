@@ -8,4 +8,4 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::post('/v1/citation', [PegueController::class, 'store']);
+Route::post('/v1/citation', [PegueController::class, 'store'])->middleware('auth:sanctum');
