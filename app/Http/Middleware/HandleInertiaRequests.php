@@ -38,9 +38,13 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            'can' => [
-                'createCitations' => Auth::user()->can('create', new Citation()),
-            ]
+            'auth' => [
+                'user' => [
+                    'can' => [
+                        'createCitations' => Auth::user() ? Auth::user()->can('create', new Citation()) : null,
+                    ],
+                ],
+            ],
         ]);
     }
 }
