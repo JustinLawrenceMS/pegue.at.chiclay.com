@@ -63,6 +63,7 @@ class Assistant
 
         $response = OpenAI::chat()->create([
             "model"    => "gpt-3.5-turbo",
+            'max_tokens' => 4096,
             "messages" => $this->messages
         ])->choices[0]->message->content;
 
@@ -73,7 +74,7 @@ class Assistant
             ];
         }
 
-        $this->setMessages();
+        unset($this->messages);
 
         return $response;
     }

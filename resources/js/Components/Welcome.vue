@@ -30,12 +30,12 @@
         </thead>
         <tbody>
             <tr v-for="(citation, index) in citations" :key="citation.id">
-                <td>
+                <td class="p-11">
                     {{ bibs[index] }}
                 </td>
-                <td>
+                <td class="p-11">
                     {{ JSON.parse(citation.mesh_headings).join(", ") }}
-                </td>/
+                </td>
             </tr>
         </tbody>
     </table>
