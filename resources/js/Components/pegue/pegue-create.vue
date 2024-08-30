@@ -4,7 +4,7 @@
             <div class="min-h-screen flex items-center justify-center">
                 <div id="citation-card" class="row-auto">
                     <div class="col-auto flex flex-col">
-                        <label for="citation" class="text-3xl pb-2 dark:text-white">Add Citation</label>
+                        <label for="citation" class="text-9xl pb-10 dark:text-white">Add Citation</label>
                         <textarea
                             class="h-64 resize-none border
                             border-gray-200 rounded-md
@@ -20,8 +20,8 @@
                     <div class="col-auto">
                         <button
                             class="px-4 py-2 pt-2 text-white
-                            bg-blue-500 rounded
-                            hover:bg-blue-700"
+                            dark:bg-zinc-600 bg-slate-900 rounded
+                            hover:bg-slate-500"
                             @click="handleClick">
                             Add
                         </button>
@@ -37,6 +37,12 @@
 <script>
 export default {
     name: "PegueCreate",
+    props: {
+        can: {
+            type: Object,
+            required: true,
+        },
+    },
     data() {
         return {
             citation: '',
@@ -45,9 +51,17 @@ export default {
     },
     methods: {
         async handleClick() {
-            this.citation = document.getElementById("citation").value;
             this.isLoading = true;
-            await axios.post(`/api/v1/citation`, {'citation': this.citation});
+            if (this.can.createCitations) {
+                try {
+                    axios.post(`/api/v1/citation`, {'citation': this.citation});
+                } catch (e) {
+                    console.log('error in post');
+                    console.error(e);
+                }
+            } else {
+                console.error("Error creating Citation");
+            }
             this.isLoading = false;
             this.citation = "";
         }

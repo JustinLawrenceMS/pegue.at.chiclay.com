@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Citation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -36,7 +38,9 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            //
+            'can' => [
+                'createCitations' => Auth::user()->can('create', new Citation()),
+            ]
         ]);
     }
 }

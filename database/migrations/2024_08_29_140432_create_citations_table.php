@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('drug_type')->nullable();
             $table->json('mesh_headings')->nullable();
             $table->string('url')->nullable();
+            $table->json('citation')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

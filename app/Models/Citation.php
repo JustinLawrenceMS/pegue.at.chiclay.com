@@ -21,6 +21,7 @@ class Citation extends Model
             'author' => 'array',
             'mesh_headings' => 'array',
             'year' => 'array',
+            'citation' => 'array',
         ];
     }
 }

@@ -13,7 +13,7 @@ class CitationPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class CitationPolicy
      */
     public function view(User $user, Citation $citation): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,7 +29,7 @@ class CitationPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -37,7 +37,7 @@ class CitationPolicy
      */
     public function update(User $user, Citation $citation): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -45,7 +45,7 @@ class CitationPolicy
      */
     public function delete(User $user, Citation $citation): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -53,7 +53,7 @@ class CitationPolicy
      */
     public function restore(User $user, Citation $citation): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -61,6 +61,6 @@ class CitationPolicy
      */
     public function forceDelete(User $user, Citation $citation): bool
     {
-        //
+        return true;
     }
 }

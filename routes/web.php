@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Citation;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -22,6 +24,10 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
     Route::get('/pegue/create', function () {
-        return Inertia::render('PegueCreate');
+        return Inertia::render('PegueCreate', [
+            'can' => [
+                'createCitations' => Auth::user()->can('create', ( new Citation() )),
+            ]
+        ]);
     });
 });
