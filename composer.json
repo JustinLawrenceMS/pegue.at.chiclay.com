@@ -38,10 +38,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "openai-php/laravel": "^0.10.1",
-        "tightenco/ziggy": "^2.0",
-        "citation-style-language/locales":"@dev",
-        "citation-style-language/styles":"@dev",
-        "seboettg/citeproc-php": "^2"
+        "tightenco/ziggy": "^2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

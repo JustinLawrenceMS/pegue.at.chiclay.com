@@ -4,11 +4,16 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Seboettg\CiteProc\StyleSheet;
+use Seboettg\CiteProc\CiteProc;
+
+
 
 class User extends Authenticatable
 {
@@ -61,5 +66,23 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function citations(): HasMany
+    {
+        return $this->hasMany(Citation::class);
+    }
+
+    public function jsonCitations(): array
+    {
+        $citations = $this->citations;
+
+        $jsonCitations = [];
+        $index = 0;
+        foreach ($citations as $citation) {
+            $jsonCitations[$index++] = $citation->citation;
+        }
+
+        return $jsonCitations;
     }
 }

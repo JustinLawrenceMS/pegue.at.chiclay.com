@@ -43,7 +43,9 @@ class HandleInertiaRequests extends Middleware
                     'can' => [
                         'createCitations' => Auth::user() ? Auth::user()->can('create', new Citation()) : null,
                     ],
-                ],
+                    'citations' => Auth::user() ? Auth::user()->citations : null,
+                    'jsonCitations' => Auth::user() ? Auth::user()->jsonCitations() : null,
+                ]
             ],
         ]);
     }

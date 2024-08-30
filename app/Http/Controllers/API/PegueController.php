@@ -35,6 +35,7 @@ class PegueController extends Controller
         $citation->drug_type = $metadata['drug_type'];
         $citation->citation = json_encode($metadata);
 
+        $citation->save();
         return response()->json($citation, 200);
     }
 }
