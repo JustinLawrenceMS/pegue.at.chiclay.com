@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('citations', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->json('author')->nullable();
             $table->string('title')->nullable();
             $table->string('publication')->nullable();
