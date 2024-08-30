@@ -7,8 +7,8 @@
                         <label for="citation" class="text-9xl pb-10 dark:text-white">Add Citation</label>
                         <textarea
                             class="h-64 resize-none border
-                            border-gray-200 rounded-md
-                            focus:border-blue-500
+                            border-gray-700 rounded-md
+                            focus:border-red-500
                             focus:outline-none
                             focus:shadow-outline"
                             v-model="citation"
@@ -68,3 +68,9 @@ export default {
     },
 }
 </script>
+<style scoped>
+    @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+    * {
+        font-family: Raleway;
+    }
+</style>
