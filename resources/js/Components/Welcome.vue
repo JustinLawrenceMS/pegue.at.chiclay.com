@@ -20,9 +20,9 @@
 </script>
 
 <template>
-    <a class="text-9xl no-underline" href="/pegue/create">+</a>
+    <a class="text-9xl dark:text-white no-underline" href="/pegue/create">+</a>
 
-    <table>
+    <table class="dark:text-white">
         <thead>
             <th>
                 Citation
