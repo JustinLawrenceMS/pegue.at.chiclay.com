@@ -9,7 +9,11 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 
 defineProps({
-    canResetPassword: Boolean,
+    canResetPassword: {
+        type: Boolean,
+        default: true,
+    },
+    canRegister: Boolean,
     status: String,
 });
 
@@ -48,7 +52,7 @@ const submit = () => {
                     id="email"
                     v-model="form.email"
                     type="email"
-                    class="mt-1 block w-full"
+                    class="bg-gray-400 mt-1 block w-full"
                     required
                     autofocus
                     autocomplete="username"
@@ -62,7 +66,7 @@ const submit = () => {
                     id="password"
                     v-model="form.password"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="bg-gray-400 mt-1 block w-full"
                     required
                     autocomplete="current-password"
                 />
@@ -79,6 +83,12 @@ const submit = () => {
             <div class="flex items-center justify-end mt-4">
                 <Link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
                     Forgot your password?
+                </Link>
+                <div>
+                    &nbsp;
+                </div>
+                <Link v-if="canRegister" :href="route('register')" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
+                    Create an account?
                 </Link>
 
                 <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">

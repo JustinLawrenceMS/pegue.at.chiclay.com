@@ -14,6 +14,9 @@ export default {
 
     theme: {
         extend: {
+            backgroundImage: {
+                "pegue-hero": "url('/storage/tree.jpg')",
+            },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
