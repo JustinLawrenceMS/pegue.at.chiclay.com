@@ -4,7 +4,7 @@ import { Link } from '@inertiajs/vue3';
 
 <template>
     <Link :href="'/'">
-        <div class="text-9xl text-gray-400 bg-purple-950 flex items-center justify-between">
+        <div class="md:text-9xl text-4xl text-black tdark:text-gray-400 flex items-center justify-between">
             <p>Pegue.</p>
             <p>&nbsp;</p>
         </div>
