@@ -4,7 +4,7 @@
             <div class="min-h-screen flex items-center justify-center">
                 <div id="citation-card" class="row-auto">
                     <div class="col-auto flex flex-col">
-                        <label for="citation" class="text-9xl pb-10 dark:text-white">Add Citation</label>
+                        <label for="citation" class="md:text-9xl text-6xl pb-10 dark:text-white">Add Citation</label>
                         <textarea
                             class="h-64 resize-none border
                             border-gray-700 rounded-md
