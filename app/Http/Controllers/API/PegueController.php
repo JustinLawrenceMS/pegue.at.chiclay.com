@@ -24,15 +24,15 @@ class PegueController extends Controller
 
         $citation = new Citation();
         $citation->user_id = Auth::user()->id;
-        $citation->author = json_encode($metadata['author']);
-        $citation->title = $metadata['title'];
-        $citation->publication  = $metadata['publication'];
-        $citation->volume = $metadata['volume'];
-        $citation->issue = $metadata['issue'];
-        $citation->year = json_encode($metadata['issued']);
-        $citation->pages = $metadata['pages'];
-        $citation->mesh_headings = json_encode($metadata['mesh-headings']);
-        $citation->drug_type = $metadata['drug_type'];
+        $citation->author = !isset($metadata['author']) ? null : json_encode($metadata['author']);
+        $citation->title = !isset($metadata['title']) ? null : $metadata['title'];
+        $citation->publication  = !isset($metadata['publication']) ? null : $metadata['publication'];
+        $citation->volume = !isset($metadata['volume']) ? null : $metadata['volume'];
+        $citation->issue = !isset($metadata['issue']) ? null : $metadata['issue'];
+        $citation->year = !isset($metadata['issued']) ? null : json_encode($metadata['issued']);
+        $citation->pages = !isset($metadata['pages']) ? null : $metadata['pages'];
+        $citation->mesh_headings = !isset($metadata['mesh_headings']) ? null : json_encode($metadata['mesh-headings']);
+        $citation->drug_type = !isset($metadata['drug_type']) ? null : $metadata['drug_type'];
         $citation->citation = json_encode($metadata);
 
         $citation->save();

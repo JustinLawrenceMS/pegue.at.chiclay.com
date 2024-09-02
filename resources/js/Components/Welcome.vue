@@ -34,7 +34,7 @@
                     {{ bibs[index] }}
                 </td>
                 <td class="p-11">
-                    {{ JSON.parse(citation.mesh_headings).join(", ") }}
+                    {{ !citation.mesh_headings ? null : JSON.parse(citation.mesh_headings).join(", ") }}
                 </td>
             </tr>
         </tbody>
