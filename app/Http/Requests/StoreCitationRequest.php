@@ -22,7 +22,7 @@ class StoreCitationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['unique', 'required', 'string'],
         ];
     }
 }
