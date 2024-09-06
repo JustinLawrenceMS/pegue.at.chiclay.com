@@ -26,7 +26,7 @@
                             Add
                         </button>
                         <div v-if="isLoading">
-                            <img src="/storage/loader.gif" alt="loading..." />
+                            <img style="width: 3%; height: auto;" src="/storage/loader.gif" alt="loading..." />
                         </div>
                     </div>
                 </div>
@@ -51,10 +51,11 @@ export default {
     },
     methods: {
         async handleClick() {
-            this.isLoading = true;
             if (this.can.createCitations) {
                 try {
+                    this.isLoading = true;
                     axios.post(`/api/v1/citation`, {'citation': this.citation});
+                    this.isLoading = false;
                 } catch (e) {
                     console.log('error in post');
                     console.error(e);
@@ -62,7 +63,6 @@ export default {
             } else {
                 console.error("Error creating Citation");
             }
-            this.isLoading = false;
             this.citation = "";
         }
     },

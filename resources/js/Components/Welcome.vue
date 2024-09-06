@@ -4,13 +4,13 @@
 
     const page = usePage();
     const json = page.props.auth.user.jsonCitations;
+    console.dir(JSON.parse('[' + json + ']'));
     const citations = page.props.auth.user.citations;
 
     let bibs = [];
     let output = [];
     for (let i = 0; i < json.length; i++) {
         output[i] = new Cite(JSON.parse(json[i]));
-        console.log(output[i]);
         bibs[i] = output[i].format('bibliography', {
             format: 'text',
             template: 'apa',
@@ -34,7 +34,7 @@
                     {{ bibs[index] }}
                 </td>
                 <td class="p-11">
-                    {{ !citation.mesh_headings ? null : JSON.parse(citation.mesh_headings).join(", ") }}
+                    {{ !citation['mesh_headings'] ? null : JSON.parse(citation['mesh_headings']).join(", ") }}
                 </td>
             </tr>
         </tbody>

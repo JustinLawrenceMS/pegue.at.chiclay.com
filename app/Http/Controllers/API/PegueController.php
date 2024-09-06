@@ -20,7 +20,11 @@ class PegueController extends Controller
         $assistant = new Assistant();
         $assistant->systemMessage(null);
         $metadata = $assistant->send($request->input("citation"));
+        \Log::info($metadata);
+
         $metadata = json_decode($metadata, true);
+        \Log::info('this is $metadata line 23');
+        \Log::info($metadata);
 
         $citation = new Citation();
         $citation->user_id = Auth::user()->id;
@@ -31,7 +35,7 @@ class PegueController extends Controller
         $citation->issue = !isset($metadata['issue']) ? null : $metadata['issue'];
         $citation->year = !isset($metadata['issued']) ? null : json_encode($metadata['issued']);
         $citation->pages = !isset($metadata['pages']) ? null : $metadata['pages'];
-        $citation->mesh_headings = !isset($metadata['mesh_headings']) ? null : json_encode($metadata['mesh-headings']);
+        $citation->mesh_headings = !isset($metadata['mesh-headings']) ? null : json_encode($metadata['mesh-headings']);
         $citation->drug_type = !isset($metadata['drug_type']) ? null : $metadata['drug_type'];
         $citation->citation = json_encode($metadata);
 

@@ -2,44 +2,22 @@
 
 namespace App\AI;
 
+use Illuminate\Support\Facades\Storage;
 use OpenAI\Laravel\Facades\OpenAI;
 
 class Assistant
 {
-    private string $systemMessage = 'You are a library assistant and your job is to
-    classify journal citations with MeSH (Medical Subject Headings) based on bibliographic
-    citations that the user will provide. The user will copy and paste a citation in APA
-    format.  You are going to return a JSON object in the following format:
-      {
-    "author": [
-      {
-        "given": "",
-        "family": ""
-      }
-    ],
-    "drug_type": "",
-    "issue": 0,
-    "pages": "",
-    "issued": {
-      "date-parts": [
-        [
-          0
-        ]
-      ]
-    },
-    "mesh-headings": [],
-    "publication": "",
-    "title": "",
-    "url": "",
-    "volume": 0
-  }
-  Note the field "mesh-headings".  Here you simply add one or more MeSH headings, as a JSON array of strings.
-  Use only official MeSH headings for this field, from the National Library of Medicine';
-
+    private string $systemMessage = '';
+    private string $csl_path = '';
     protected array $messages = [];
 
     public function systemMessage(string $message = null): static
     {
+        $this->systemMessage = config('openai.prompt.prompt_text');
+        $this->csl_path = Storage::disk('local')->get(config('openai.prompt.csl_path'));
+
+        \Log::info($this->systemMessage . $this->csl_path);
+
         if (!is_null($message)) {
             $this->systemMessage = $message;
         }
@@ -74,8 +52,6 @@ class Assistant
             ];
         }
 
-        unset($this->messages);
-
         return $response;
     }
 
@@ -83,6 +59,8 @@ class Assistant
     {
         $this->setMessages();
 
+        \Log::info("this->messages, AI assistant, line 62", $this->messages);
+        unset($this->messages);
         return $this->send($message);
     }
 

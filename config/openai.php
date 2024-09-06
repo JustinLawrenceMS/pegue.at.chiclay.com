@@ -25,4 +25,15 @@ return [
     */
 
     'request_timeout' => env('OPENAI_REQUEST_TIMEOUT', 30),
+
+    'prompt' => [
+        'csl_path' => env('CSL_DEFINITION_PATH', 'csl-data.json'),
+        'prompt_text' => 'You are a library assistant and your job is to
+        classify journal citations with MeSH (Medical Subject Headings) based on bibliographic
+        citations that the user will provide. The user will copy and paste a citation in APA
+        format.  You are going to return a JSON object in CSL format.  (See the definition
+        appended to this prompt). Note the field "mesh-headings".  Here you simply add one
+        or more MeSH headings, as a JSON array of strings. Use only official MeSH headings
+        for this field, from the National Library of Medicine',
+    ],
 ];
