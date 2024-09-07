@@ -2,7 +2,7 @@
     <div class="min-h-screen flex items-center justify-center">
         <div class="container">
             <div class="min-h-screen flex items-center justify-center">
-                <div id="citation-card" class="row-auto bg-gray-100 p-5 rounded-3xlg">
+                <div id="citation-card" class="row-auto bg-gray-100 p-5 rounded-3xl">
                     <div class="col-auto flex flex-col">
                         <label for="citation" class="md:text-9xl text-6xl pb-10 dark:text-white">Add Citation</label>
                         <textarea
