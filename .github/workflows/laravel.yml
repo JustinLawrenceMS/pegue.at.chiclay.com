@@ -31,7 +31,7 @@ jobs:
     - name: Do node_modules
       run: |
         npm i
-        npm run dev
+        npm run build
     - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest
       env:
         DB_CONNECTION: sqlite
