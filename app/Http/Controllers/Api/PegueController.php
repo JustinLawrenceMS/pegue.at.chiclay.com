@@ -13,9 +13,11 @@ use Illuminate\Support\Facades\Gate;
 class PegueController extends Controller
 {
 
-   public function store(Request $request, array $test = null): JsonResponse
+   public function store(Request $request): JsonResponse
     {
         Gate::authorize('create', (new Citation()));
+
+        $test = $request->input('test');
 
         if (is_null($test)) {
             $assistant = new Assistant();

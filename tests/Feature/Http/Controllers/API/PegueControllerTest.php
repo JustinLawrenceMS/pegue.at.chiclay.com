@@ -42,7 +42,7 @@ class PegueControllerTest extends TestCase
         foreach ($citations as $citation) {
             $citation = json_encode($citation);
             $response = $this->actingAs($user)
-                ->post('api/v1/citation', ['citation' => $citation]);
+                ->post('api/v1/citation', ['test' => $citation]);
             $response->assertStatus(200);
         }
     }
