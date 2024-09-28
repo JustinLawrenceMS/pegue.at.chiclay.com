@@ -13,14 +13,18 @@ use Illuminate\Support\Facades\Gate;
 class PegueController extends Controller
 {
 
-   public function store(Request $request): JsonResponse
+   public function store(Request $request, array $test = null): JsonResponse
     {
         Gate::authorize('create', (new Citation()));
 
-        $assistant = new Assistant();
-        $assistant->systemMessage(null);
-        $metadata = $assistant->send($request->input("citation"));
-        \Log::info($metadata);
+        if (is_null($test)) {
+            $assistant = new Assistant();
+            $assistant->systemMessage(null);
+            $metadata = $assistant->send($request->input("citation"));
+            \Log::info($metadata);
+        } else {
+            $metadata = $test;
+        }
 
         $metadata = json_decode($metadata, true);
         \Log::info('this is $metadata line 23');
