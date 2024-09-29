@@ -33,7 +33,7 @@ class PegueControllerTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function test_api_saves_test_data(): void
+    public function test_api_post_request_resolves(): void
     {
         $citations = Storage::disk('local')->get('test.citations.json');
         $citations = json_decode($citations, true);
@@ -46,4 +46,17 @@ class PegueControllerTest extends TestCase
             $response->assertStatus(200);
         }
     }
+    public function test_api_post_request_saves_data(): void
+{
+    $citations = Storage::disk('local')->get('test.citations.json');
+    $citations = json_decode($citations, true);
+    $user = User::factory()->create();
+
+    foreach ($citations as $citation) {
+        $citation = json_encode($citation);
+        $response = $this->actingAs($user)
+            ->post('api/v1/citation', ['test' => $citation]);
+        $this->assertDatabaseHas('citations', ['citation' => $citation]);
+    }
+}
 }
