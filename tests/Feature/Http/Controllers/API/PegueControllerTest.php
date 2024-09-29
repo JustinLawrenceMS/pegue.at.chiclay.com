@@ -62,7 +62,6 @@ class PegueControllerTest extends TestCase
 
         $testCitations = Citation::all();
 
-        $index = 0;
         for ($i = 0; $i < count($testCitations); $i++) {
             $test = json_decode($testCitations[$i]->citation, true);
             $this->assertEquals($citations[$i], $test);
