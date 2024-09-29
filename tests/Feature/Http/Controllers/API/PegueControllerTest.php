@@ -52,11 +52,11 @@ class PegueControllerTest extends TestCase
     $citations = json_decode($citations, true);
     $user = User::factory()->create();
 
-    foreach ($citations as $citation) {
-        $citation = json_encode($citation);
-        $response = $this->actingAs($user)
-            ->post('api/v1/citation', ['test' => $citation]);
-        $this->assertDatabaseHas('citations', ['citation' => $citation]);
+    for ($i=0; $i<count($citations); $i++) {
+        $citation[$i] = json_encode($citations[$i]);
+        $this->actingAs($user)
+            ->post('api/v1/citation', ['test' => $citation[$i]]);
+        $this->assertDatabaseHas('citations', ['citation' => $citation[$i]]);
     }
 }
 }
