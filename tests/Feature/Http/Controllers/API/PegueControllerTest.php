@@ -11,6 +11,7 @@ use Tests\TestCase;
 
 class PegueControllerTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic feature test example.
      */
@@ -28,7 +29,7 @@ class PegueControllerTest extends TestCase
 
     public function test_citation_endpoint_is_not_reachable_by_logged_out_users(): void
     {
-      //  $this->markTestSkipped('not doing api key in workflow');
+        //  $this->markTestSkipped('not doing api key in workflow');
         $response = $this->post('api/v1/citation', ['citation' => 'Ivanovic, J., Baltic, M. Z., Janjic, J., Markovic, R., Baltic, T., Boskovic, M., ... & Jovanovic, D. (2016). Health aspects of dry-cured ham. Scientific journal" Meat Technology", 57(1), 43-50.']);
         $response->assertStatus(302);
     }
@@ -46,17 +47,25 @@ class PegueControllerTest extends TestCase
             $response->assertStatus(200);
         }
     }
-    public function test_api_post_request_saves_data(): void
-{
-    $citations = Storage::disk('local')->get('test.citations.json');
-    $citations = json_decode($citations, true);
-    $user = User::factory()->create();
 
-    for ($i=0; $i<count($citations); $i++) {
-        $citation[$i] = json_encode($citations[$i]);
-        $this->actingAs($user)
-            ->post('api/v1/citation', ['test' => $citation[$i]]);
-        $this->assertDatabaseHas('citations', ['citation' => $citation[$i]]);
+    public function test_api_post_request_saves_data(): void
+    {
+        $citations = Storage::disk('local')->get('test.citations.json');
+        $citations = json_decode($citations, true);
+        $user = User::factory()->create();
+
+        for ($i = 0; $i < count($citations); $i++) {
+            $citation = json_encode($citations[$i]);
+            $this->actingAs($user)
+                ->post('api/v1/citation', ['test' => $citation]);
+        }
+
+        $testCitations = Citation::all();
+
+        $index = 0;
+        for ($i = 0; $i < count($testCitations); $i++) {
+            $test = json_decode($testCitations[$i]->citation, true);
+            $this->assertEquals($citations[$i], $test);
+        }
     }
-}
 }
