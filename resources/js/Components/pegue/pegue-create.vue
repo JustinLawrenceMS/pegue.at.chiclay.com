@@ -56,6 +56,8 @@ export default {
                     this.isLoading = true;
                     axios.post(`/api/v1/citation`, {'citation': this.citation});
                     this.isLoading = false;
+			window.location.href = "/dashboard";
+
                 } catch (e) {
                     console.log('error in post');
                     console.error(e);

@@ -1,12 +1,14 @@
 <script setup>
-    import {usePage} from "@inertiajs/vue3";
-    import Cite from "citation-js";
-
-    const page = usePage();
+    import { router, usePage } from "@inertiajs/vue3";
+  import Cite from "citation-js";
+   const page = usePage();
     const json = page.props.auth.user.jsonCitations;
-    console.dir(JSON.parse('[' + json + ']'));
     const citations = page.props.auth.user.citations;
 
+	router.visit('/dashboard', {
+		preserveScroll: true
+		});
+ 
     let bibs = [];
     let output = [];
     for (let i = 0; i < json.length; i++) {
