@@ -1,24 +1,24 @@
 <script setup>
-    import { router, usePage } from "@inertiajs/vue3";
-  import Cite from "citation-js";
-   const page = usePage();
-    const json = page.props.auth.user.jsonCitations;
-    const citations = page.props.auth.user.citations;
+import { router, usePage } from "@inertiajs/vue3";
+import Cite from "citation-js";
+const page = usePage();
+const json = page.props.auth.user.jsonCitations;
+const citations = page.props.auth.user.citations;
 
-	router.visit('/dashboard', {
-		preserveScroll: true
-		});
- 
-    let bibs = [];
-    let output = [];
-    for (let i = 0; i < json.length; i++) {
-        output[i] = new Cite(JSON.parse(json[i]));
-        bibs[i] = output[i].format('bibliography', {
-            format: 'text',
-            template: 'apa',
-            lang: 'en-US'
-        });
-    }
+router.visit("/dashboard", {
+    preserveScroll: true,
+});
+
+let bibs = [];
+let output = [];
+for (let i = 0; i < json.length; i++) {
+    output[i] = new Cite(JSON.parse(json[i]));
+    bibs[i] = output[i].format("bibliography", {
+        format: "text",
+        template: "apa",
+        lang: "en-US",
+    });
+}
 </script>
 
 <template>
@@ -26,12 +26,8 @@
 
     <table class="dark:text-white">
         <thead>
-            <th>
-                Citation
-            </th>
-            <th>
-                Descriptors
-            </th>
+            <th>Citation</th>
+            <th>Descriptors</th>
         </thead>
         <tbody>
             <tr>
@@ -57,7 +53,11 @@
                     {{ bibs[index] }}
                 </td>
                 <td class="p-11">
-                    {{ !citation['mesh_headings'] ? null : JSON.parse(citation['mesh_headings']).join(", ") }}
+                    {{
+                        !citation["mesh_headings"]
+                            ? null
+                            : JSON.parse(citation["mesh_headings"]).join(", ")
+                    }}
                 </td>
             </tr>
         </tbody>
