@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Storage;
 use OpenAI\Client;
 use OpenAI\Laravel\Facades\OpenAI;
 
-class Chat
+class Assistant 
 {
     protected array $messages = [];
 
