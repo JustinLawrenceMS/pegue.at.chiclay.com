@@ -2,11 +2,9 @@
 
 namespace App\AI;
 
-use Illuminate\Support\Facades\Storage;
-use OpenAI\Client;
 use OpenAI\Laravel\Facades\OpenAI;
 
-class Assistant 
+class Assistant
 {
     protected array $messages = [];
 
@@ -30,7 +28,7 @@ class Assistant
         ];
 
         $response = OpenAI::chat()->create([
-            "model"    => "gpt-3.5-turbo",
+            "model" => "gpt-3.5-turbo",
             "messages" => $this->messages
         ])->choices[0]->message->content;
 
@@ -60,12 +58,12 @@ class Assistant
 
     public function setMessages(string $role, string $message): void
     {
-	    $this->messages[] = [
-		    'role' => $role,
-		    'content' => $message,
-	    ];
+        $this->messages[] = [
+            'role' => $role,
+            'content' => $message,
+        ];
     }
-    
+
     public function setSession(): void
     {
         if (!session('messages')) {
