@@ -2,32 +2,20 @@
 
 namespace App\AI;
 
-use Illuminate\Support\Facades\Storage;
 use OpenAI\Laravel\Facades\OpenAI;
 
 class Assistant
 {
-    private string $systemMessage = '';
-    private string $csl_path = '';
     protected array $messages = [];
 
-    public function systemMessage(string $message = null): static
+    public function systemMessage(string $message): static
     {
-        $this->systemMessage = config('openai.prompt.prompt_text');
-        $this->csl_path = Storage::disk('local')->get(config('openai.prompt.csl_path'));
-
-        \Log::info($this->systemMessage . $this->csl_path);
-
-        if (!is_null($message)) {
-            $this->systemMessage = $message;
-        }
-
         $this->messages[] = [
             'role' => 'system',
-            'content' => $this->systemMessage
+            'content' => $message
         ];
 
-        $this->setMessages();
+        $this->setSession();
 
         return $this;
     }
@@ -40,8 +28,7 @@ class Assistant
         ];
 
         $response = OpenAI::chat()->create([
-            "model"    => "gpt-3.5-turbo",
-            'max_tokens' => 4096,
+            "model" => "gpt-3.5-turbo",
             "messages" => $this->messages
         ])->choices[0]->message->content;
 
@@ -52,31 +39,43 @@ class Assistant
             ];
         }
 
+        $this->setSession();
+
         return $response;
     }
 
     public function reply(string $message): ?string
     {
-        $this->setMessages();
+        $this->setSession();
 
-        \Log::info("this->messages, AI assistant, line 62", $this->messages);
-        unset($this->messages);
         return $this->send($message);
     }
 
-    public function messages()
+    public function getMessages()
     {
         return $this->messages;
     }
 
-    public function setMessages()
+    public function setMessages(string $role, string $message): void
+    {
+        $this->messages[] = [
+            'role' => $role,
+            'content' => $message,
+        ];
+    }
+
+    public function setSession(): void
     {
         if (!session('messages')) {
             session(['messages' => json_encode($this->messages, JSON_PRETTY_PRINT)]);
         } else {
             $sess = json_decode(session('messages'), true);
             $merge = array_merge($sess, $this->messages);
-            session(['messages' => json_encode($merge, JSON_PRETTY_PRINT)]);
+
+            // Remove duplicates from the multidimensional array
+            $unique = array_map('unserialize', array_unique(array_map('serialize', $merge)));
+
+            session(['messages' => json_encode($unique, JSON_PRETTY_PRINT)]);
             $this->messages = json_decode(session('messages'), true);
         }
     }
