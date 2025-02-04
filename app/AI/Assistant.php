@@ -2,17 +2,29 @@
 
 namespace App\AI;
 
+use Illuminate\Support\Facades\Storage;
 use OpenAI\Laravel\Facades\OpenAI;
 
 class Assistant
 {
+    private string $systemMessage = '';
+    private string $csl_path = '';
     protected array $messages = [];
 
-    public function systemMessage(string $message): static
+    public function systemMessage(string $message = null): static
     {
+        $this->systemMessage = config('openai.prompt.prompt_text');
+        $this->csl_path = Storage::disk('local')->get(config('openai.prompt.csl_path'));
+
+        \Log::info($this->systemMessage . $this->csl_path);
+
+        if (!is_null($message)) {
+            $this->systemMessage = $message;
+        }
+
         $this->messages[] = [
             'role' => 'system',
-            'content' => $message
+            'content' => $this->systemMessage
         ];
 
         $this->setSession();
@@ -28,7 +40,8 @@ class Assistant
         ];
 
         $response = OpenAI::chat()->create([
-            "model" => "gpt-3.5-turbo",
+            "model"    => "gpt-3.5-turbo",
+            'max_tokens' => 4096,
             "messages" => $this->messages
         ])->choices[0]->message->content;
 
