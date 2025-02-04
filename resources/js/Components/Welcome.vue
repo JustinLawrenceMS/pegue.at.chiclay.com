@@ -1,24 +1,30 @@
 <script setup>
 import { router, usePage } from "@inertiajs/vue3";
 import Cite from "citation-js";
+import { ref, onMounted } from "vue";
+
 const page = usePage();
-const json = page.props.auth.user.jsonCitations;
-const citations = page.props.auth.user.citations;
+const json = ref(page.props.auth.user?.jsonCitations ?? []);
+const citations = ref(page.props.auth.user?.citations ?? []);
 
-router.visit("/dashboard", {
-    preserveScroll: true,
+const bibs = ref([]);
+
+onMounted(async () => {
+    if (json.value.length) {
+        try {
+            bibs.value = json.value.map((entry) => {
+                const cite = new Cite(JSON.parse(entry));
+                return cite.format("bibliography", {
+                    format: "text",
+                    template: "apa",
+                    lang: "en-US",
+                });
+            });
+        } catch (error) {
+            console.error("Error formatting citations:", error);
+        }
+    }
 });
-
-let bibs = [];
-let output = [];
-for (let i = 0; i < json.length; i++) {
-    output[i] = new Cite(JSON.parse(json[i]));
-    bibs[i] = output[i].format("bibliography", {
-        format: "text",
-        template: "apa",
-        lang: "en-US",
-    });
-}
 </script>
 
 <template>
@@ -26,37 +32,22 @@ for (let i = 0; i < json.length; i++) {
 
     <table class="dark:text-white">
         <thead>
-            <th>Citation</th>
-            <th>Descriptors</th>
+            <tr>
+                <th>Citation</th>
+                <th>Descriptors</th>
+            </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </td>
-                <td>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </td>
+            <tr v-if="citations.length === 0">
+                <td colspan="2" class="p-11 text-center">No citations available.</td>
             </tr>
             <tr v-for="(citation, index) in citations" :key="citation.id">
-                <td class="p-11">
-                    {{ bibs[index] }}
-                </td>
-                <td class="p-11">
+                <td class="p-4">{{ bibs[index] }}</td>
+                <td class="p-4">
                     {{
-                        !citation["mesh_headings"]
-                            ? null
-                            : JSON.parse(citation["mesh_headings"]).join(", ")
+                        citation.mesh_headings
+                            ? JSON.parse(citation.mesh_headings).join(", ")
+                            : "No descriptors"
                     }}
                 </td>
             </tr>
